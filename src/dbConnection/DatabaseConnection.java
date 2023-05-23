@@ -7,15 +7,12 @@ import java.util.Scanner;
 
 public class DatabaseConnection {
 	
-	public static Connection makeConnection(Scanner sc) {
+	public static Connection makeConnection(String id, String pw) {
 //		System.out.println("데이터베이스 ID를 입력하세요");
 //		String id = sc.nextLine();
 //		System.out.println("데이터베이스 비밀번호를 입력하세요");
 //		String pw = sc.nextLine();
-		
-		String id = "root";
-		String pw = "1234";
-		
+
         String url = "jdbc:mysql://localhost:3306/db01?autoReconnect=true"; 
         
       try {

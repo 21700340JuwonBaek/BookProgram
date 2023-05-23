@@ -10,9 +10,9 @@ import java.util.Scanner;
 import dbConnection.DatabaseConnection;
 
 public class AddBook {
-	private static int dbContains(Scanner sc, String title, String author, String company) throws SQLException {
+	private static int dbContains(Scanner sc, String id, String pw, String title, String author, String company) throws SQLException {
 		//넣으려는 객체가 DB에 존재하는지 확인하는 메소드
-		Connection conn = DatabaseConnection.makeConnection(sc);
+		Connection conn = DatabaseConnection.makeConnection(id, pw);
 		String query = "SELECT * FROM book WHERE title=? AND author=? AND company = ?";
 		PreparedStatement ps = conn.prepareStatement(query);
 		ps.setString(1, title);
@@ -32,8 +32,8 @@ public class AddBook {
 	}
 	
 	
-	private static int addRemains(Scanner sc, int id) throws SQLException {
-		Connection conn = DatabaseConnection.makeConnection(sc);
+	private static int addRemains(Scanner sc, String connectonId, String pw, int id) throws SQLException {
+		Connection conn = DatabaseConnection.makeConnection(connectonId, pw);
 		//책이 존재할 경우, remain값을 입력받아 업데이트 한다. 
 		System.out.println("재입고가 얼마만큼 되었나요?");
 		int remains = sc.nextInt();
@@ -56,8 +56,8 @@ public class AddBook {
 		
 	}
 	
-	private static int addNewBooks(Scanner sc, String title, String author, String company) throws SQLException {
-		Connection conn = DatabaseConnection.makeConnection(null);
+	private static int addNewBooks(Scanner sc, String id, String pw, String title, String author, String company) throws SQLException {
+		Connection conn = DatabaseConnection.makeConnection(id, pw);
 
 		//존재가 DB에 없다면, row 추가(전체 입력)
 		System.out.println("검색결과, 책이 존재하지 않습니다.");
@@ -102,7 +102,7 @@ public class AddBook {
 		
 	}
 	
-	public static void addBook(Scanner sc) {
+	public static void addBook(Scanner sc, String id, String pw) {
 		
 		System.out.println("책이 DB에 존재하는지 확인합니다.");
 		System.out.println("책의 제목을 입력하세요.");
@@ -117,7 +117,7 @@ public class AddBook {
 		
 		int resultNum = -1;
 		try {
-			resultNum = dbContains(sc, title, author, company);
+			resultNum = dbContains(sc, id, pw, title, author, company);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Addbook dbContains");
@@ -127,7 +127,7 @@ public class AddBook {
 		
 		if(resultNum > 0) {
 			try {
-				addRemains(sc, resultNum);
+				addRemains(sc, id, pw, resultNum);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -135,7 +135,7 @@ public class AddBook {
 			}
 		}else {
 			try {
-				addNewBooks(sc, title, author, company);
+				addNewBooks(sc, id, pw, title, author, company);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
